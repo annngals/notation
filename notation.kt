@@ -12,6 +12,8 @@ fun isNumber(s: String): Boolean {
 
 fun main(args: Array<String>) {
 
+    var n = 0
+    var m = 0
     print("Please input expression = ")
     var answer: String? = readLine()
     val ops = arrayOf("+", "-", "*", "/")
@@ -19,10 +21,13 @@ fun main(args: Array<String>) {
         val parts = answer?.split(' ')
         val stack = mutableListOf<String>()
         for (part in parts.reversed()) {
+
             if (isNumber(part)) {
                 stack.add(0, part)
+                n += 1
             } else {
                 if (part in ops) {
+                    m +=1
                     if (stack.size >= 2) {
                         var sign = part
                         var first = stack.first()
@@ -34,8 +39,7 @@ fun main(args: Array<String>) {
 
                         stack.add(0, str)
                     } else {
-                        println("Not enough args")
-                        return
+                        stack.add(stack.lastIndex, part)
                     }
                 } else {
                     println("Wrong expression! There are unrecognized symbols")
@@ -44,8 +48,10 @@ fun main(args: Array<String>) {
             }
         }
 
-        if (stack.size > 1) {
-            println("Not enough operators")
+        if ((m+1) != n){
+            println("Wrong expression!")
+        } else if (stack.size > 1) {
+            println("Result: ${stack.joinToString("")}")
         } else if (stack.isEmpty()) {
             println("Stack is empty. Please rerun program and enter new expression")
         } else {
